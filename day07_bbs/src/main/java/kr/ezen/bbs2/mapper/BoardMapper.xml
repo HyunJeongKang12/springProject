@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ezen.bbs2.mapper.BoardMapper"> <!-- Mapper인터페이스 위치와 namespace 일치해야 함 -->
+  	<!-- 전체 게시글 수 -->
+  	<select id="totalCnt" resultType="Integer">
+  		select count(*) from tbl_board
+  	</select>
+  	
+	<insert id="insert" parameterType="boardDTO"> <!--alias:대소문자 구분안함-->
+		insert into tbl_board (subject, contents, writer)
+		values (#{subject}, #{contents}, #{writer} )
+	</insert>
+	
+	<select id="getList" resultType="boardDTO">
+		<!-- select * from tbl_board -->
+		select * from tbl_board limit #{startIndex}, #{cntPerPage}
+	</select>
+	
+	<select id="view" parameterType="Integer" resultType="boardDTO">
+		select * from tbl_board where bid = #{bid}
+	</select>
+	
+	<update id="update" parameterType="boardDTO" >
+		update tbl_board set subject = #{subject}, 
+		contents = #{contents}
+		where bid = #{bid}
+	</update>
+	
+	<update id="hitAdd" parameterType="int">
+		update tbl_board set hit = hit+1
+		where bid = #{bid}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from tbl_board where  bid = #{bid}
+	</delete>
+</mapper>
